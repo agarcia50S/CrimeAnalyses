@@ -89,45 +89,6 @@ def myDfCleaner(myDF, lower=False, dropna=False):
     if dropna == True:
         myDF.dropna(inplace=True) # removes all rows with NaN values
 
-def toMerc(coordinates, lat=True, lon=True):
-    '''
-    Converts latitude and longitude coordinates into web 
-    Mercator projection coordinates and returns the WMP coordinates
-    as tuple (x,y) when lat and lon are both True. If only lat is True then only 
-    latitude convertion is returned and if only lon is True then only 
-    longitude convertion is returned.
-
-    Arguments:
-    latitude -- int or float type that represents the latitude value
-    longitude -- int or float type that represent the longitude value
-
-    lat -- boolean type; if True then latitude conversion is 
-    returned
-
-    lon -- boolean type; if True then longitude converstion is 
-    returned
-    '''
-    # converts string, '(LAT, LONG)', into tuple, (LAT, LONG)
-    myCoords = literal_eval(coordinates)
-
-    latitude = myCoords[0]
-    longitude = myCoords[1]
-    
-    # making instance of Transformer that has "epsg:4326" and "epsg:3857"
-    # passed into from_crs() 
-    transformer = Transformer.from_crs("epsg:4326", "epsg:3857")
-
-    # condition statements allow user to specify whether 
-    # LAT and LONG, LAT, or LONG are returned
-    if lon == True and lat == True:
-        return transformer.transform(latitude, longitude)
-    elif lon == True:
-        return transformer.transform(latitude, longitude)[0]
-    elif lat == True:
-        return transformer.transform(latitude, longitude)[1]
-    else:
-        return
-
 def lucCrimeFinder(myDF, blockCol, horiSt, vertSt):
     '''
     Used to iterate over DF column that contains house numbers and 
