@@ -1,6 +1,11 @@
+# import dependencies
+import math
+import pandas as pd
+from pyproj import Transformer
+from ast import literal_eval
+from random import sample
+
 def otherMerc(Coords):
-    import math
-    from ast import literal_eval
     Coordinates = literal_eval(Coords)
     lat = Coordinates[0]
     lon = Coordinates[1]
@@ -14,8 +19,7 @@ def otherMerc(Coords):
 
 # read in CSV file
 def sampleDF(csvFilePath, n, csvSampleName=False):
-    from random import sample
-    import pandas as pd
+
     '''
     Randomly selects n rows from a given csv file and returns a pandas 
     dataframe. It can also create a CSV file of the dataframe if a 
@@ -38,10 +42,13 @@ def sampleDF(csvFilePath, n, csvSampleName=False):
     if csvSampleName != False:
         if '.csv' not in csvSampleName:
             csvSampleName = csvSampleName + '.csv'
+
     # length of original csv file
     totalRows = len(pd.read_csv(csvFilePath))
+
     # produces random sample (list type) from range() seq. of size totalRows - n
     skip = sorted(sample(range(1, totalRows), totalRows - n))
+
     # will skip (total - n) rows, leaving 5000 rows
     mySample = pd.read_csv(csvFilePath, skiprows=skip) 
     mySampleDF = pd.DataFrame(mySample)
@@ -50,23 +57,23 @@ def sampleDF(csvFilePath, n, csvSampleName=False):
     return mySampleDF
 
 def myDfCleaner(myDF, lower=False, dropna=False):
-    import pandas as pd
-    '''For string type column names of a dataframe, it removes trailing spaces, 
-       replaces between-character spaces with '_', and coverts all uppercase 
-       letters to lowercase letters if lower=True. 
+    '''
+    For string type column names of a dataframe, it removes trailing spaces, 
+    replaces between-character spaces with '_', and coverts all uppercase 
+    letters to lowercase letters if lower=True. 
 
-       All changes are updates to the dataframe, thus the fnc returns None
+    All changes are updates to the dataframe, thus the fnc returns None
 
-       Arguments:
-       myDF -- pandas DataFrame type; this is your DF
-       
-       Optional Keyword Arguments:
-       lower -- boolean value; if True uppercase letters are converted to lowercase 
-       letters, otherwise uppercase letters remain uppercased
+    Arguments:
+    myDF -- pandas DataFrame type; this is your DF
+    
+    Optional Keyword Arguments:
+    lower -- boolean value; if True uppercase letters are converted to lowercase 
+    letters, otherwise uppercase letters remain uppercased
 
-       dropna -- boolean value, if True all NaN values in the dataframe are removed, 
-       otherwise all NaN values remain 
-       '''
+    dropna -- boolean value, if True all NaN values in the dataframe are removed, 
+    otherwise all NaN values remain 
+    '''
     for name in list(myDF.columns):
         if name[0] == ' ':
             myDF.rename(columns={name:name[1:]}, inplace=True) # inplace=True update DF and return None
@@ -83,8 +90,6 @@ def myDfCleaner(myDF, lower=False, dropna=False):
         myDF.dropna(inplace=True) # removes all rows with NaN values
 
 def toMerc(coordinates, lat=True, lon=True):
-    from pyproj import Transformer
-    from ast import literal_eval
     '''
     Converts latitude and longitude coordinates into web 
     Mercator projection coordinates and returns the WMP coordinates
@@ -135,11 +140,13 @@ def lucCrimeFinder(myDF, blockCol, horiSt, vertSt):
     '''
     crimesNearLoyola = []
     for block in myDF[blockCol]:
+
             for nStreet in vertSt:
                 if nStreet in block:
                     num = int(block.split()[0][1:3])
                     if 56 <= num <= 72:
                         crimesNearLoyola.append(block)
+
             for wStreet in horiSt:
                 if wStreet in block:
                     num2 = int(block.split()[0][1:3])
