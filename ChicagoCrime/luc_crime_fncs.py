@@ -24,7 +24,7 @@ def gps_to_merc(coords):
         lat * (math.pi/180.0)/2.0)) * scale
     return (x, y)
 
-# read in CSV file
+# used for testing
 def get_sample(csvFilePath, n, csvSampleName=False):
     '''
     Randomly selects n rows from a given csv file and returns a pandas 
