@@ -70,7 +70,7 @@ def cleaner(myDF, lower=False, dropna=False):
     replaces between-character spaces with '_', and coverts all uppercase 
     letters to lowercase letters if lower=True. 
 
-    All changes are updates to the dataframe, thus the fnc returns None
+    * All changes are updates to the dataframe, thus the fnc returns None * 
 
     Arguments:
     myDF -- pandas DataFrame type; this is your DF
